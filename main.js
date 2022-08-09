@@ -1,19 +1,22 @@
 const { app, BrowserWindow, Menu, Tray, screen: electronScreen, shell, dialog } = require('electron');
 const path = require('path');
 
+const browserWindowOptions = {
+  // DEV: More preferentially, should link your own `webPreferences` from your Electron app instead
+  webPreferences: {
+    // Preferred `preload` mechanism to expose `require`
+    preload: __dirname + '/preload.js',
+
+    // Alternative non-preload mechanism to expose `require`
+    nodeIntegration: true,
+    contextIsolation: false
+
+    // nativeWindowOpen is set to `true` by default by `karma-electron` as well, see #50
+  }
+}
+
 const createMainWindow = () => {
-  let mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
-    show: false,
-    backgroundColor: 'white',
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      devTools: true,
-      preload: path.join(__dirname, 'preload.js'),
-    },
-  });
+  let mainWindow = new BrowserWindow(browserWindowOptions);
   const startURL = `file://${path.join(__dirname, './index.html')}`;
 
   mainWindow.loadURL(startURL);
