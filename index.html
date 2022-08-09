@@ -1,0 +1,14 @@
+<html><body>
+  <script type="text/javascript">
+    ;(async () => {
+      console.log('before')
+
+      await new Promise(resolve => {
+        const db = new window.sqlite3.Database(':memory:')
+        db.close(resolve)
+      })
+
+      console.log('after')
+    })()
+  </script>
+</body></html>
